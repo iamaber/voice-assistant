@@ -44,6 +44,12 @@ def take_command():
         return "None"
     return command.lower()
 
+engine = pyttsx3.init()
+
+def speak(text):
+    print(f"Assistant: {text}")
+    engine.say(text)
+    engine.runAndWait()
 
 def run_assistant():
     wish_user()
@@ -82,6 +88,7 @@ def run_assistant():
 
         else:
             speak("Sorry, I didn't understand that. Try again.")
+    
 
 
 run_assistant()
