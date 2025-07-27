@@ -1,0 +1,12 @@
+[project]
+name = "voice-assistant"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pyjokes>=0.8.3",
+    "pyttsx3>=2.99",
+    "speechrecognition>=3.14.3",
+    "wikipedia>=1.4.0",
+]
