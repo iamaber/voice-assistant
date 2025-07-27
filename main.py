@@ -1,20 +1,10 @@
 import speech_recognition as sr
-import pyttsx3
+from TTS.api import TTS
 import datetime
 import wikipedia
 import webbrowser
 import os
 import pyjokes
-
-
-def speak(text):
-    print(f"Assistant: {text}")
-    try:
-        engine = pyttsx3.init()
-        engine.say(text)
-        engine.runAndWait()
-    except:
-        print("Speech output not supported in Colab.")
 
 
 def wish_user():
@@ -37,19 +27,24 @@ def take_command():
 
     try:
         print("Recognizing...")
-        command = recognizer.recognize_google(audio, language='en-in')
+        command = recognizer.recognize_google(audio, language="en-in")
         print(f"You said: {command}")
     except Exception as e:
         print("Could not understand, say that again please...")
         return "None"
     return command.lower()
 
-engine = pyttsx3.init()
+
+tts = TTS(
+    model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False, gpu=False
+)
+
 
 def speak(text):
     print(f"Assistant: {text}")
-    engine.say(text)
-    engine.runAndWait()
+    tts.tts_to_file(text=text, file_path="output.wav")
+    os.system("aplay output.wav")
+
 
 def run_assistant():
     wish_user()
@@ -88,7 +83,6 @@ def run_assistant():
 
         else:
             speak("Sorry, I didn't understand that. Try again.")
-    
 
 
 run_assistant()

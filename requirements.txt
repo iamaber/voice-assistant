@@ -1,5 +1,5 @@
 SpeechRecognition 
-pyttsx3 
+TTS
 wikipedia 
 pyjokes
 pyaudio
