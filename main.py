@@ -35,6 +35,26 @@ def ask_llm(prompt):
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return response
 
+vosk_model = Model("vosk-model-small-en-us-0.15")
+recognizer = KaldiRecognizer(vosk_model, 16000)
+
+def take_command():
+    p = pyaudio.PyAudio()
+    stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+    stream.start_stream()
+
+    print("Listening...")
+    while True:
+        data = stream.read(4096, exception_on_overflow=False)
+        if recognizer.AcceptWaveform(data):
+            result = json.loads(recognizer.Result())
+            command = result.get("text", "")
+            if command != "":
+                print(f"You said: {command}")
+                stream.stop_stream()
+                stream.close()
+                p.terminate()
+                return command.lower()
 
 def wish_user():
     hour = int(datetime.datetime.now().hour)
