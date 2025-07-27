@@ -3,8 +3,9 @@ name = "voice-assistant"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.9"
 dependencies = [
+    "pyaudio>=0.2.14",
     "pyjokes>=0.8.3",
     "pyttsx3>=2.99",
     "speechrecognition>=3.14.3",
