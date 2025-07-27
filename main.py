@@ -1,10 +1,39 @@
-import speech_recognition as sr
-from TTS.api import TTS
 import datetime
-import wikipedia
-import webbrowser
+import json
 import os
+import wave
+import webbrowser
+
+import pyaudio
 import pyjokes
+import wikipedia
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from TTS.api import TTS
+from vosk import KaldiRecognizer, Model
+
+tts = TTS(
+    model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False, gpu=False
+)
+
+
+def speak(text):
+    print(f"Assistant: {text}")
+    tts.tts_to_file(text=text, file_path="output.wav")
+    os.system("aplay output.wav")
+
+
+# Initialize DistilGPT2
+tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
+model = AutoModelForCausalLM.from_pretrained("distilgpt2")
+
+
+def ask_llm(prompt):
+    inputs = tokenizer.encode(prompt, return_tensors="pt")
+    outputs = model.generate(
+        inputs, max_new_tokens=100, pad_token_id=tokenizer.eos_token_id
+    )
+    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    return response
 
 
 def wish_user():
@@ -33,17 +62,6 @@ def take_command():
         print("Could not understand, say that again please...")
         return "None"
     return command.lower()
-
-
-tts = TTS(
-    model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False, gpu=False
-)
-
-
-def speak(text):
-    print(f"Assistant: {text}")
-    tts.tts_to_file(text=text, file_path="output.wav")
-    os.system("aplay output.wav")
 
 
 def run_assistant():

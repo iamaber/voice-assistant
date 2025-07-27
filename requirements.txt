@@ -1,5 +1,8 @@
-SpeechRecognition 
-TTS
-wikipedia 
+vosk
+pyttsx3
+wikipedia
 pyjokes
+TTS
+torch
+transformers
 pyaudio
