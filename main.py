@@ -66,24 +66,6 @@ def wish_user():
         speak("Good Evening!")
     speak("I am your voice assistant. How can I help you today?")
 
-
-def take_command():
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("Listening...")
-        recognizer.pause_threshold = 1
-        audio = recognizer.listen(source)
-
-    try:
-        print("Recognizing...")
-        command = recognizer.recognize_google(audio, language="en-in")
-        print(f"You said: {command}")
-    except Exception as e:
-        print("Could not understand, say that again please...")
-        return "None"
-    return command.lower()
-
-
 def run_assistant():
     wish_user()
     while True:
@@ -120,7 +102,12 @@ def run_assistant():
             break
 
         else:
-            speak("Sorry, I didn't understand that. Try again.")
+            speak("Let me think...")
+            response = ask_llm(query)
+            speak(response)
+            if "exit" in response or "bye" in response:
+                speak("Goodbye! Have a nice day!")
+                break
 
 
 run_assistant()
