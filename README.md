@@ -39,4 +39,4 @@ This is an offline voice assistant built with lightweight components:
 
 ## 🏃‍♂️ How to Run
 ```bash
-python assistant.py
+python main.py
